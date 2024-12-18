@@ -57,3 +57,45 @@
   h2 {
     font-size: 3rem;
   } */
+
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f3f3f3;
+  }
+
+  .game-play {
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    gap: 10px;
+  }
+
+  .card {
+    width: 100px;
+    height: 100px;
+    background-color: #ccc;
+    border-radius: 8px;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    cursor: pointer;
+    transform: scale(1);
+    transition: transform 0.2s;
+  }
+
+  .card:hover {
+    transform: scale(1.1);
+  }
+
+  .card.flipped {
+    background-color: #fff;
+    cursor: default;
+  }
+
+  .hidden {
+    visibility: hidden;
+  }

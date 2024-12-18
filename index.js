@@ -96,3 +96,90 @@
 //       });
 //     });
 //   });
+const gameplay = document.getElementById("game-play");
+
+const cardvalues = [
+  "1",
+  "1",
+  "2",
+  "2",
+  "3",
+  "3",
+  "4",
+  "4",
+  "5",
+  "5",
+  "6",
+  "6",
+  "7",
+  "7",
+];
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+shuffle(array);
+
+cardvalues.forEach((value) => {
+  const card = document.createElement("div");
+  card.classList.add("card");
+  card.dataset.value = value;
+  card.innerHTML = '<span class="hidden">' + value + "</span>";
+  gameplay.appendChild(card);
+});
+
+let firstcard = null;
+let secondcard = null; 
+let lockboard = false;
+
+function flipCard(event) {
+  if (lockboard) return;
+  const clickedCard = event.target;
+
+  if (clickedCard === firstcard) return;
+
+  clickedCard.classList.add("flipped");
+  clickedCard.querySelector("span").classList.remove("hidden");
+
+  if (!firstcard) {
+    firstcard = clickedCard;
+  } else {
+    secondcard = clickedCard;
+    checkForMatch();
+  }
+}
+
+function checkForMatch() {
+  const isMatch = firstcard.dataset.value === secondcard.dataset.value;
+  isMatch ? disableCards() : unflipCards();
+}
+
+function disableCards() {
+  firstcard.removeEventListener("click", flipCard);
+  secondcard.removeEventListener("click", flipCard);
+  resetBoard();
+}
+
+function unflipCards() {
+  lockBoard = true;
+  setTimeout(() => {
+    firstcard.classList.remove("flipped");
+    firstcard.querySelector("span").classList.add("hidden");
+    secondcard.classList.remove("flipped");
+    secondcard.querySelector("span").classList.add("hidden");
+    resetBoard();
+  }, 1000);
+}
+
+function resetBoard() {
+  [firstcard, secondcard, lockboard,] = [null, null, false];
+}
+
+document.querySelectorAll(".card").forEach((card) => {
+  card.addEventListener("click", flipCard);
+});
